@@ -32,12 +32,12 @@ class ProductsRepositoryImpl : ProductsRepository {
     private val productsList get() = _productsList.toList()
 
     private val _postIsOver = MutableStateFlow(false)
-    val postIsOver = _postIsOver.asStateFlow()
+    override val postIsOver = _postIsOver.asStateFlow()
 
     private var isSearching = false
 
     private val _isError = MutableStateFlow("")
-    val isError = _isError.asStateFlow()
+    override val isError = _isError.asStateFlow()
 
     private val _searchProducts = MutableStateFlow<List<Product>>(emptyList())
 

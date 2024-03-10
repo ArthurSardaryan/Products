@@ -85,17 +85,17 @@ fun ProductsScreen(
     var searchText by remember {
         mutableStateOf("")
     }
+    val state = productsScreenState
     val products by remember {
         derivedStateOf {
-            (productsScreenState as ProductsScreenState.Success).products.filter {
+            (productsScreenState as? ProductsScreenState.Success)?.products?.filter {
                 it.category == currentFilter || currentFilter.isEmpty()
-            }
+            } ?: listOf()
         }
     }
     var isSearchMode by remember {
         mutableStateOf(false)
     }
-    val state = productsScreenState
     LaunchedEffect(isSearchMode) {
         if (!isSearchMode) {
             viewModel.searchText("")

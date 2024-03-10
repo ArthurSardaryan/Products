@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import vk.tech.products.data.repository.ProductsRepositoryImpl
 import vk.tech.products.domain.usecases.GetCategoriesUseCase
+import vk.tech.products.domain.usecases.GetIsErrorUseCase
+import vk.tech.products.domain.usecases.GetIsPostOverUseCase
 import vk.tech.products.domain.usecases.GetProductsUseCase
 import vk.tech.products.domain.usecases.LoadNextDataUseCase
 import vk.tech.products.domain.usecases.SearchTextUseCase
@@ -23,6 +25,8 @@ class ProductViewModel : ViewModel() {
     private val getProductsUseCase = GetProductsUseCase(repository)
     private val loadNextDataUseCase = LoadNextDataUseCase(repository)
     private val searchTextUseCase = SearchTextUseCase(repository)
+    private val getIsErrorUseCase = GetIsErrorUseCase(repository)
+    private val getIsPostOverUseCase = GetIsPostOverUseCase(repository)
 
     private val loadNextDataFlow = MutableSharedFlow<ProductsScreenState>()
 
@@ -30,12 +34,12 @@ class ProductViewModel : ViewModel() {
 
     private val repoProducts = getProductsUseCase()
 
-    private val isError = repository.isError
+    private val isError = getIsErrorUseCase()
         .filter { it.isNotEmpty() }
         .map {
             ProductsScreenState.Error(it)
         }
-    private val isProductsOver = repository.postIsOver
+    private val isProductsOver = getIsPostOverUseCase()
         .filter { it }
         .map {
             ProductsScreenState.Success(
